@@ -6,19 +6,8 @@ import youtube_dl
 
 import re
 
-# PLAYLIST CLASS-----------------------
-class Playlist(object):
-    def __init__(self, id, title):
-        self.id = id
-        self.title = title
-# -------------------------------------
-
-# SONG CLASS---------------------------
-class Song(object):
-    def __init__(self, atrtis, track):
-        self.artist = atrtis
-        self.track = track
-# -------------------------------------
+from song import Song
+from playlist import Playlist
 
 # YOUTUBECLIENT CLASS---------------------------
 class YouTubeClient(object):
@@ -34,9 +23,9 @@ class YouTubeClient(object):
 
         # Get credentials and create an API client
         flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(client_secrets_file, scopes)
-
-        credentials = flow.run_console()
-
+        
+        credentials = flow.run_local_server()
+        
         youtube = googleapiclient.discovery.build(api_service_name, api_version, credentials=credentials)
 
         self.youtube = youtube
@@ -161,7 +150,10 @@ class YouTubeClient(object):
         text = text.replace(' with ', ' ')
 
         if '[' in text:
-            lastIndex = text.index(']') + 2
+            try:
+                lastIndex = text.index(']')
+            except ValueError: 
+                lastIndex = 0
             text = text[:text.index('[')] + text[lastIndex:]
 
         if '|' in text:

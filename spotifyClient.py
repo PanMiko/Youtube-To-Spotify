@@ -1,15 +1,11 @@
 import requests
-import urllib.parse
-
-
-class Playlist(object):
-    def __init__(self, id, title):
-        self.id = id
-        self.title = title
+from credentials.credentails import REFRESH_TOKEN, BASE_64
+from song import Song
+from playlist import Playlist
 
 class SpotifyClient(object):
-    def __init__(self, apiToken, userId):
-        self.apiToken = apiToken
+    def __init__(self, userId):
+        self.apiToken = self.refreshToken()
         self.userId = userId
 
     def getPlaylists(self):
@@ -28,8 +24,6 @@ class SpotifyClient(object):
         playlists = []
 
         for item in range(len(responseJSON['items'])):
-            # print(responseJSON['items'][item]['name'])
-
             playlists.append(Playlist(responseJSON['items'][item]['id'], responseJSON['items'][item]['name']))
 
         return playlists
@@ -49,12 +43,21 @@ class SpotifyClient(object):
         responseJSON = response.json()
         try:
             if not responseJSON['tracks']['items']:
-                return None
+                return None, None
         except KeyError:
             print(">>> !!! KEYERROR")
-            return None
+            return None, None
 
-        return responseJSON['tracks']['items'][0]['uri']
+        artistAndTitle = ''
+        for artist in responseJSON['tracks']['items'][0]['artists']:
+            artistAndTitle += str(artist['name']) + ', '
+        artistAndTitle = artistAndTitle[:-2]
+
+        title = responseJSON['tracks']['items'][0]['name']
+        
+        url_img = responseJSON['tracks']['items'][0]['album']['images'][1]['url']
+        
+        return responseJSON['tracks']['items'][0]['uri'], Song(artistAndTitle, title, url_img)
 
 
     def addSong(self, trackURI, playlistId):
@@ -68,9 +71,20 @@ class SpotifyClient(object):
             }
         )
 
-        responseJSON = response.json()
-
         return response.ok
+
+    def refreshToken(self):
+        url = "https://accounts.spotify.com/api/token"
+
+        response = requests.post(url,
+                                 data={"grant_type": "refresh_token",
+                                       "refresh_token": REFRESH_TOKEN},
+                                 headers={"Authorization": "Basic " + BASE_64})
+
+        response_json = response.json()
+        print(response_json)
+
+        return response_json["access_token"]
 
 
     
