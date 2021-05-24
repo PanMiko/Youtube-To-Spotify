@@ -6,8 +6,8 @@ import youtube_dl
 
 import re
 
-from song import Song
-from playlist import Playlist
+from helpers.song import Song
+from helpers.playlist import Playlist
 
 # YOUTUBECLIENT CLASS---------------------------
 class YouTubeClient(object):

@@ -6,11 +6,11 @@ from PyQt5 import QtCore, QtGui
 from PyQt5.QtGui import * 
 from PyQt5.QtCore import * 
 
-from songWindow import SongWindow
+from gui.songWindow import SongWindow
 
-from statsWindow import StatsWindow
+from gui.statsWindow import StatsWindow
 
-from worker import Worker
+from helpers.worker import Worker
 
 class MainWindow(object):
     # setting the entire window

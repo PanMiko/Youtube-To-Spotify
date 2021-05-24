@@ -3,7 +3,7 @@ from spotifyClient import SpotifyClient
 
 from credentials.credentails import SPOTIFY_USER_ID
 
-from mainWindow import MainWindow
+from gui.mainWindow import MainWindow
 from PyQt5 import QtWidgets
 import sys
 

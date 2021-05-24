@@ -1,7 +1,7 @@
 import requests
 from credentials.credentails import REFRESH_TOKEN, BASE_64
-from song import Song
-from playlist import Playlist
+from helpers.song import Song
+from helpers.playlist import Playlist
 
 class SpotifyClient(object):
     def __init__(self, userId):

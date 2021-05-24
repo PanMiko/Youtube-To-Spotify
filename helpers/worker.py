@@ -1,4 +1,4 @@
-from helper import getPlaylists, startConvert
+from helpers.helper import getPlaylists, startConvert
 from PyQt5.QtCore import QObject, pyqtSignal
 
 # Worker class used for threads
