@@ -37,7 +37,7 @@ class StatsWindow(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        Dialog.setWindowTitle(_translate("Dialog", "Statistics"))
         Dialog.setFixedSize(570, 300)
         self.label.setText(_translate("Dialog", str(self.stats[0])))
         self.label_2.setText(_translate("Dialog", str(self.stats[1])))

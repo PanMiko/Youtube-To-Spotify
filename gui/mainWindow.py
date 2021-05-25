@@ -1,15 +1,12 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QThread
+from PyQt5.QtWidgets import QListWidgetItem
 
-from PyQt5.QtWidgets import * 
-from PyQt5 import QtCore, QtGui
-from PyQt5.QtGui import * 
-from PyQt5.QtCore import * 
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel
+from PyQt5.QtGui import QIcon, QPixmap
 
 from gui.songWindow import SongWindow
-
 from gui.statsWindow import StatsWindow
-
 from helpers.worker import Worker
 
 class MainWindow(object):
@@ -29,6 +26,8 @@ class MainWindow(object):
         # Main Window
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(878, 780)
+        MainWindow.setAutoFillBackground(False)
+        # MainWindow.setStyleSheet("background-color: rgb(0, 0, 0);")
         MainWindow.setAnimated(True)
         MainWindow.setUnifiedTitleAndToolBarOnMac(False)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -37,16 +36,25 @@ class MainWindow(object):
         # title label
         self.title = QtWidgets.QLabel(self.centralwidget)
         self.title.setEnabled(True)
-        self.title.setGeometry(QtCore.QRect(10, 10, 861, 61))
+        self.title.setGeometry(QtCore.QRect(10, 20, 861, 61))
         font = QtGui.QFont()
         font.setPointSize(28)
         font.setBold(True)
         font.setWeight(75)
         self.title.setFont(font)
+        # self.title.setStyleSheet("color: rgb(255, 255, 255);")
         self.title.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.title.setAutoFillBackground(False)
-        self.title.setAlignment(QtCore.Qt.AlignCenter)
+        self.title.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.title.setObjectName("title")
+
+        self.logo = QtWidgets.QLabel(self.centralwidget)
+        self.logo.setGeometry(QtCore.QRect(730, 10, 100, 100))
+        # self.logo.setStyleSheet("")
+        self.logo.setText("")
+        self.logo.setPixmap(QtGui.QPixmap("img/icon.png"))
+        self.logo.setScaledContents(True)
+        self.logo.setObjectName("label_4")
 
         # 'Get Youtube and Spotify Playlists' Button
         self.getPlaylistsBtn = QtWidgets.QPushButton(self.centralwidget, clicked=lambda: self.pressGetPlaylistsBtn())
@@ -75,6 +83,7 @@ class MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.toLabel.setFont(font)
+        # self.toLabel.setStyleSheet("color: rgb(255, 255, 255)")
         self.toLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.toLabel.setObjectName("toLabel")
 
@@ -82,6 +91,7 @@ class MainWindow(object):
         self.ytPlaylistsWidget = QtWidgets.QListWidget(self.centralwidget)
         self.ytPlaylistsWidget.setGeometry(QtCore.QRect(80, 200, 190, 180))
         self.ytPlaylistsWidget.setObjectName("ytPlaylistsWidget")
+        # self.ytPlaylistsWidget.setStyleSheet("background-color: rgb(94, 94, 94);color: rgb(255, 255, 255);")
         self.ytPlaylistsWidget.itemDoubleClicked.connect(self.setChosenYtPlaylist)
         self.ytPlaylistsWidget.itemDoubleClicked.connect(lambda: self.fromLabel.setText(f"YT: {self.ytPlaylistsWidget.currentItem().text().split('. ', 1)[1]}"))
 
@@ -91,6 +101,7 @@ class MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(14)
         self.ytPlayistsLabel.setFont(font)
+        # self.ytPlayistsLabel.setStyleSheet("color: rgb(255, 255, 255);")
         self.ytPlayistsLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.ytPlayistsLabel.setObjectName("ytPlayistsLabel")
 
@@ -100,6 +111,7 @@ class MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(14)
         self.spotifyPlaylistsLabel.setFont(font)
+        # self.spotifyPlaylistsLabel.setStyleSheet("color: rgb(255, 255, 255);")
         self.spotifyPlaylistsLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.spotifyPlaylistsLabel.setObjectName("spotifyPlaylistsLabel")
 
@@ -107,6 +119,7 @@ class MainWindow(object):
         self.spotifyPlaylistsWidget = QtWidgets.QListWidget(self.centralwidget)
         self.spotifyPlaylistsWidget.setGeometry(QtCore.QRect(608, 200, 190, 180))
         self.spotifyPlaylistsWidget.setObjectName("spotifyPlaylistsWidget")
+        # self.spotifyPlaylistsWidget.setStyleSheet("background-color: rgb(255, 255, 255);\n""color: rgb(0, 0, 0);")
         self.spotifyPlaylistsWidget.itemDoubleClicked.connect(self.setChosenSpotifyPlaylist)
         self.spotifyPlaylistsWidget.itemDoubleClicked.connect(lambda: self.toLabel.setText(f"SPTFY: {self.spotifyPlaylistsWidget.currentItem().text().split('. ', 1)[1]}"))
 
@@ -116,6 +129,7 @@ class MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(12)
         self.startConvertBtn.setFont(font)
+        # self.startConvertBtn.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.startConvertBtn.setObjectName("startConvertBtn")
         self.startConvertBtn.setEnabled(False)
 
@@ -123,6 +137,7 @@ class MainWindow(object):
         self.convertedSongsWidget = QtWidgets.QListWidget(self.centralwidget)
         self.convertedSongsWidget.setGeometry(QtCore.QRect(270, 420, 338, 261))
         self.convertedSongsWidget.setObjectName("convertedSongsWidget")
+        # self.convertedSongsWidget.setStyleSheet("background-color: rgb(255, 255, 255);\n""color: rgb(0, 0, 0);")
         self.convertedSongsWidget.itemDoubleClicked.connect(self.showSongWindow)
 
         # 'Songs saved on Spotify' Label
@@ -133,6 +148,7 @@ class MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.savedSongsLabel.setFont(font)
+        # self.savedSongsLabel.setStyleSheet("color: rgb(255, 255, 255);")
         self.savedSongsLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.savedSongsLabel.setObjectName("savedSongsLabel")
 
@@ -142,6 +158,7 @@ class MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.moreStatisticsBtn.setFont(font)
+        # self.moreStatisticsBtn.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.moreStatisticsBtn.setEnabled(False)
         self.moreStatisticsBtn.setObjectName("moreStatisticsBtn")
 
@@ -285,7 +302,7 @@ class MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
 
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Youtube to Spotify Converter"))
         MainWindow.setFixedSize(878, 780)
         self.title.setText(_translate("MainWindow", "YouTube to Spotify Converter"))
         self.getPlaylistsBtn.setText(_translate("MainWindow", "Get \n"

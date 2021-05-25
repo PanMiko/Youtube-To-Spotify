@@ -48,5 +48,5 @@ class SongWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setFixedSize(800, 500)
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Song details"))
         self.trackLabel.setText(_translate("MainWindow", str(self.track)))

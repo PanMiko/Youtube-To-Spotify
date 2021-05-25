@@ -44,9 +44,4 @@ def startConvert(chosenYTPlaylist, chosenSpotifyPlaylist, youtubeClient, spotify
         print(f">>> Songs not founded on Spotify:                   {howManyNotFound}\n")
         statistics.append(f"Songs not founded on Spotify: {howManyNotFound}\n")
 
-        # [gui.convertedSongsWidget.addItem(f"{item.artist} - {item.track}") for item in successSavedOnSpotify]
-        # gui.converted = successSavedOnSpotify
-        # gui.statistics = statistics
-        # gui.moreStatisticsBtn.setEnabled(True)
-
         return successSavedOnSpotify, statistics

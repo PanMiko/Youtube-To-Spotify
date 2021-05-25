@@ -7,6 +7,7 @@ from gui.mainWindow import MainWindow
 from PyQt5 import QtWidgets
 import sys
 
+# Path to Youtube credentials file
 YOUTUBE_CREDS = "./credentials/youtube_creds.json"
 
 def main():
