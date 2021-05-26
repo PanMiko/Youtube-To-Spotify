@@ -8,6 +8,10 @@ import re
 from helpers.song import Song
 from helpers.playlist import Playlist
 
+BLACK_LIST = ['offical ', 'orginal ', 'video', 'audio', 'ft.', 'feat.', 'lyric', 'extended', 'ft', 'feat', ' x ', ' & ', ' + ', ' vs ', ' / ', ',', ' and ', ' with']
+FEAT_LIST = ['ft.', 'feat.', 'feat', 'ft']
+WHITE_LIST = ['remix', 'edit']
+
 # YOUTUBECLIENT CLASS---------------------------
 class YouTubeClient(object):
     # constructor
@@ -135,22 +139,16 @@ class YouTubeClient(object):
         track = self.shellingOut(unknown[result + 3:])
 
         return artist, track
-
+    
     def shellingOut(self, text):
         text = text.lower()
         
-        text = text.replace(' x ', ' ')
-        text = text.replace(' & ', ' ')
-        text = text.replace(' + ', ' ')
-        text = text.replace(' vs ', ' ')
-        text = text.replace(' / ', ' ')
-        text = text.replace(',', ' ')
-        text = text.replace(' and ', ' ')
-        text = text.replace(' with ', ' ')
+        for word in BLACK_LIST:
+            text = text.replace(word, ' ')
 
         if '[' in text:
             try:
-                lastIndex = text.index(']')
+                lastIndex = text.index(']') + 1
             except ValueError: 
                 lastIndex = 0
             text = text[:text.index('[')] + text[lastIndex:]
@@ -166,13 +164,12 @@ class YouTubeClient(object):
         i = 0
         while i < len(x):
             s = text[x[i] : x[i + 1] + 1]
-            
-            if 'offical' in s or 'orginal' in s or 'video' in s or 'audio' in s or 'ft.' in s or 'feat.' in s or 'lyric' in s or 'extended' in s or 'edit' in s:
+            if not any(word in s for word in WHITE_LIST):
                 temp = temp.replace(s, ' ')
 
             i += 2
         
-        temp.replace('ft', ' ')
-        temp.replace('feat', ' ')
-        temp.replace(' - ', ' ')
+        for x in FEAT_LIST:
+            temp = temp.replace(x, ' ')
+
         return temp
